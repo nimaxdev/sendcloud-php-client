@@ -40,6 +40,7 @@ class Parcel extends Model
         'name',
         'company_name',
         'address',
+        'house_number',
         'address_divided',
         'address_2',
         'city',
@@ -54,6 +55,8 @@ class Parcel extends Model
         'label',
         'reference',
         'requestShipment',
+        'request_label',
+        'request_label_async',
         'order_number',
         'tracking_number',
         'tracking_url',
@@ -127,5 +130,10 @@ class Parcel extends Model
         }
 
         return null;
+    }
+
+    public function getStatuses() {
+        $result = $this->connection()->get($this->url . '/statuses');
+        return $result;
     }
 }
