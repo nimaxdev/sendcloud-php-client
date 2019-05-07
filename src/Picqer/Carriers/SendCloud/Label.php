@@ -38,4 +38,19 @@ class Label extends Model
 
         return $this->connection->download($url);
     }
+    
+    /**
+     * Returns the label content (PDF) in A6 format.
+     *
+     * @return string
+     */
+    public function normalPrinterContent()
+    {
+	foreach($this->normal_printer as $normalprinter){
+		$url = str_replace($this->connection->apiUrl(), '', $normalprinter );
+	}    
+	
+        return $this->connection->download($url);
+    }
+    
 }
