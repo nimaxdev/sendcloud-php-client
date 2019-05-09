@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
-
 class Connection
 {
 
@@ -54,6 +53,7 @@ class Connection
     /**
      * @param string $apiKey API key for SendCloud
      * @param string $apiSecret API secret for SendCloud
+     * @param string $partnerId Sendcloud Partner ID
      */
     public function __construct($apiKey, $apiSecret, $partnerId = null)
     {
@@ -143,7 +143,7 @@ class Connection
      * Perform a POST request
      * @param string $url
      * @param mixed $body
-     * @return string
+     * @return array
      * @throws SendCloudApiException
      */
     public function post($url, $body)
@@ -164,7 +164,7 @@ class Connection
      * Perform PUT request
      * @param string $url
      * @param mixed $body
-     * @return string
+     * @return array
      * @throws SendCloudApiException
      */
     public function put($url, $body)
@@ -184,7 +184,7 @@ class Connection
     /**
      * Perform DELETE request
      * @param string $url
-     * @return string
+     * @return array
      * @throws SendCloudApiException
      */
     public function delete($url)
