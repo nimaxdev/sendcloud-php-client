@@ -69,6 +69,15 @@ class Parcel extends Model
         'customs_shipment_type',
         'parcel_items',
         'customs_declaration',
+        'insured_value',
+        'to_state',
+        'type',
+        'shipment_uuid',
+        'shipping_method',
+        'external_order_id',
+        'external_shipment_id',
+        'is_return',
+        'carrier',
     ];
 
     protected $url = 'parcels';
