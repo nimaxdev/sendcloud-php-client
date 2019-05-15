@@ -225,6 +225,10 @@ class Connection
             ) {
                 throw new SendCloudApiException('SendCloud error: ' . $resultArray['error']['message'], $resultArray['error']['code']);
             }
+            // handle cancel parcel return
+            if (array_key_exists('message', $resultArray) && $response->getStatusCode() >= 400) {
+                throw new SendCloudApiException('SendCloud error: ' . $resultArray['message'], $response->getStatusCode());
+            }
 
             return $resultArray;
         } catch (\RuntimeException $e) {
@@ -263,6 +267,7 @@ class Connection
      * @param string $url
      * @return string
      * @throws SendCloudApiException
+     * @throws \RuntimeException if unable to read or an error occurs while reading.
      */
     public function download($url)
     {

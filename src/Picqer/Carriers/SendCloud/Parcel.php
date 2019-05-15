@@ -145,4 +145,18 @@ class Parcel extends Model
         $result = $this->connection()->get($this->url . '/statuses');
         return $result;
     }
+
+    /**
+     * @param int|null $parcelID
+     *
+     * @return array
+     * @throws SendCloudApiException
+     */
+    public function cancel($parcelID = null)
+    {
+        if ($parcelID) {
+            $this->id = $parcelID;
+        }
+        return $this->connection()->post($this->url.'/'.urlencode($this->id).'/cancel', '');
+    }
 }
