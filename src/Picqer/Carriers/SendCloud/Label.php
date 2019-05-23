@@ -31,6 +31,8 @@ class Label extends Model
      * Returns the label content (PDF) in A6 format.
      *
      * @return string
+     * @throws SendCloudApiException
+     * @throws \RuntimeException if unable to read or an error occurs while reading.
      */
     public function labelPrinterContent()
     {

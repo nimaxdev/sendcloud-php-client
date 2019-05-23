@@ -18,6 +18,7 @@ trait FindOne
     /**
      * @param $id
      * @return Model|FindOne
+     * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
     public function find($id)
     {
