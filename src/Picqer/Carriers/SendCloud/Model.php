@@ -38,6 +38,11 @@ abstract class Model
         'plural' => ''
     ];
 
+    /**
+     * Model constructor.
+     * @param Connection $connection
+     * @param array $attributes
+     */
     public function __construct(Connection $connection, array $attributes = [])
     {
         $this->connection = $connection;
@@ -96,16 +101,28 @@ abstract class Model
         return $attributes;
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     protected function isFillable($key)
     {
         return in_array($key, $this->fillable);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     protected function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
     }
 
+    /**
+     * @param $key
+     * @return mixed|null
+     */
     public function __get($key)
     {
         if (isset($this->attributes[$key])) {
@@ -115,11 +132,19 @@ abstract class Model
         return null;
     }
 
+    /**
+     * @param $key
+     * @return bool
+     */
     public function __isset($key)
     {
         return isset($this->attributes[$key]);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public function __set($key, $value)
     {
         if ($this->isFillable($key)) {
@@ -127,6 +152,9 @@ abstract class Model
         }
     }
 
+    /**
+     * @return bool
+     */
     public function exists()
     {
         if ( ! in_array($this->primaryKey, $this->attributes)) return false;
@@ -134,11 +162,18 @@ abstract class Model
         return ! empty($this->attributes[$this->primaryKey]);
     }
 
-    public function json()
+    /**
+     * Returns the JSON representation of a value
+     * @link https://php.net/manual/en/function.json-encode.php
+     * @param int $options [optional] Bitmask consisting of JSON constants
+     * @param int $depth   [optional] Set the maximum depth. Must be greater than zero.
+     * @return string|false a JSON encoded string on success or FALSE on failure.
+     */
+    public function json($options = 0, $depth = 512)
     {
         $json = [];
         $json[$this->namespaces['singular']] = $this->attributes;
-        return json_encode($json);
+        return json_encode($json, $options, $depth);
     }
 
     /**
