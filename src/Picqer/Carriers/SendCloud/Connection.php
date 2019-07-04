@@ -8,6 +8,50 @@ use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
 class Connection
 {
+    protected $headers = [];
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        if (!$this->headers) {
+            $this->setHeadersJson();
+        }
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     * @return Connection
+     */
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
+        $this->client = null;
+        return $this;
+    }
+
+    /**
+     * @return Connection
+     */
+    public function setHeadersJson()
+    {
+        return $this->setHeaders([
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json',
+        ]);
+    }
+
+    /**
+     * @return Connection
+     */
+    public function setHeadersPdf()
+    {
+        return $this->setHeaders([
+            'Accept'       => 'application/pdf',
+        ]);
+    }
 
     /**
      * Holds the API url for test requests
@@ -76,10 +120,7 @@ class Connection
 
         $clientConfig = [
             'base_uri' => $this->apiUrl(),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json'
-            ],
+            'headers' => $this->getHeaders(),
             'auth' => [$this->apiKey, $this->apiSecret],
             'handler' => $handlerStack
         ];

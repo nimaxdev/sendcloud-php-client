@@ -18,7 +18,7 @@ class CustomsDeclaration extends Model
         'normal_printer',
     ];
 
-    protected $url = 'labels';
+    protected $url = 'customs_declaration';
 
     protected $namespaces = [
         'singular' => 'customs_declaration',
@@ -35,6 +35,7 @@ class CustomsDeclaration extends Model
      */
     public function fetchContent()
     {
+        $this->connection->setHeadersPdf();
         $url = str_replace($this->connection->apiUrl(), '', $this->normal_printer);
 
         return $this->connection->download($url);
