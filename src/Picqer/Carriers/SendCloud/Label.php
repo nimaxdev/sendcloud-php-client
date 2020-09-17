@@ -27,6 +27,21 @@ class Label extends Model
     ];
 
     /**
+     * @var Parcel|null parent
+     */
+    protected $parcel;
+
+    /**
+     * @inheritDoc
+     * @param Parcel|null $parent
+     */
+    public function __construct(Connection $connection, array $attributes = [], ?Parcel $parent = null)
+    {
+        parent::__construct($connection, $attributes);
+        $this->parcel = $parent;
+    }
+
+    /**
      * Returns the label content (PDF) in A6 format.
      *
      * @return string
@@ -35,7 +50,11 @@ class Label extends Model
      */
     public function labelPrinterContent()
     {
-        $url = $this->label_printer;
+        if ($this->parcel) {
+            $url = $this->parcel->getPrimaryLabelUrl();
+        } else {
+            $url = $this->label_printer;
+        }
 
         return $this->connection->download($url);
     }
