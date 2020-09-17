@@ -6,6 +6,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+use RuntimeException;
+
 class Connection
 {
     protected $headers = [];
@@ -134,8 +137,8 @@ class Connection
 
     /**
      * Perform a GET request
-     * @param string $url
-     * @param array $params
+     * @param string|UriInterface $url
+     * @param array               $params
      * @return array
      * @throws SendCloudApiException
      */
@@ -155,8 +158,8 @@ class Connection
 
     /**
      * Perform a POST request
-     * @param string $url
-     * @param mixed $body
+     * @param string|UriInterface $url
+     * @param mixed               $body
      * @return array
      * @throws SendCloudApiException
      */
@@ -176,8 +179,8 @@ class Connection
 
     /**
      * Perform PUT request
-     * @param string $url
-     * @param mixed $body
+     * @param string|UriInterface $url
+     * @param mixed               $body
      * @return array
      * @throws SendCloudApiException
      */
@@ -197,7 +200,7 @@ class Connection
 
     /**
      * Perform DELETE request
-     * @param string $url
+     * @param string|UriInterface $url
      * @return array
      * @throws SendCloudApiException
      */
@@ -245,7 +248,7 @@ class Connection
             }
 
             return $resultArray;
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             throw new SendCloudApiException('SendCloud error: ' . $e->getMessage());
         }
     }
@@ -278,11 +281,11 @@ class Connection
     /**
      * Download a resource.
      *
-     * @param string $url relative to apiUrl or absolute
-     * @param array $headers
+     * @param string|UriInterface $url relative to apiUrl or absolute
+     * @param array               $headers
      * @return string
      * @throws SendCloudApiException
-     * @throws \RuntimeException if unable to read or an error occurs while reading.
+     * @throws RuntimeException if unable to read or an error occurs while reading.
      */
     public function download(string $url, array $headers = ['Accept' => 'application/pdf'])
     {
