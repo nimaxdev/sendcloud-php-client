@@ -20,6 +20,7 @@ namespace Picqer\Carriers\SendCloud;
  * @property array country
  * @property array shipment
  * @property array label
+ * @property array documents
  * @property bool requestShipment
  * @property string order_number
  * @property string tracking_number
