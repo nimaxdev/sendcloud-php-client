@@ -36,8 +36,7 @@ class CustomsDeclaration extends Model
     public function fetchContent()
     {
         $this->connection->setHeadersPdf();
-        $url = str_replace($this->connection->apiUrl(), '', $this->normal_printer);
 
-        return $this->connection->download($url);
+        return $this->connection->download($this->normal_printer);
     }
 }

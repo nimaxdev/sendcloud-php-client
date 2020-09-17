@@ -269,13 +269,13 @@ class Connection
     /**
      * Download a resource.
      *
-     * @param string $url
+     * @param string $url relative to apiUrl or absolute
      * @param array $headers
      * @return string
      * @throws SendCloudApiException
      * @throws \RuntimeException if unable to read or an error occurs while reading.
      */
-    public function download($url, array $headers = ['Accept' => 'application/pdf'])
+    public function download(string $url, array $headers = ['Accept' => 'application/pdf'])
     {
         try {
             $result = $this->client()->get($url, ['headers' => $headers]);

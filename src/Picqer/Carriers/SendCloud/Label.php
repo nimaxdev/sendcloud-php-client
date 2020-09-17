@@ -35,7 +35,7 @@ class Label extends Model
      */
     public function labelPrinterContent()
     {
-        $url = str_replace($this->connection->apiUrl(), '', $this->label_printer);
+        $url = $this->label_printer;
 
         return $this->connection->download($url);
     }
@@ -50,8 +50,6 @@ class Label extends Model
 
     public function normalPrinterContent($position = 0)
     {
-        $url = str_replace($this->connection->apiUrl(), '', $this->normal_printer[$position]);
-
-        return $this->connection->download($url);
+        return $this->connection->download($this->normal_printer[$position]);
     }
 }
