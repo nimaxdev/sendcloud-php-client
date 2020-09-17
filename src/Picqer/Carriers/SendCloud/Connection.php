@@ -15,9 +15,6 @@ class Connection
      */
     public function getHeaders()
     {
-        if (!$this->headers) {
-            $this->setHeadersJson();
-        }
         return $this->headers;
     }
 
@@ -25,7 +22,7 @@ class Connection
      * @param array $headers
      * @return Connection
      */
-    public function setHeaders($headers)
+    public function setHeaders(array $headers)
     {
         $this->headers = $headers;
         $this->client = null;
@@ -49,9 +46,20 @@ class Connection
     public function setHeadersPdf()
     {
         return $this->setHeaders([
-            'Accept'       => 'application/pdf',
+            'Accept' => 'application/pdf',
         ]);
     }
+
+    /**
+     * @return Connection
+     */
+    public function setHeadersZpl()
+    {
+        return $this->setHeaders([
+            'Accept' => 'application/zpl',
+        ]);
+    }
+
     private $apiUrl = 'https://panel.sendcloud.sc/api/v2/';
     private $apiKey;
     private $apiSecret;
@@ -74,6 +82,7 @@ class Connection
         $this->apiKey = $apiKey;
         $this->apiSecret = $apiSecret;
         $this->partnerId = $partnerId;
+        $this->setHeadersJson();
     }
 
     public function client(): Client
@@ -89,9 +98,9 @@ class Connection
 
         $clientConfig = [
             'base_uri' => $this->apiUrl(),
-            'headers' => $this->getHeaders(),
-            'auth' => [$this->apiKey, $this->apiSecret],
-            'handler' => $handlerStack
+            'headers'  => $this->getHeaders(),
+            'auth'     => [$this->apiKey, $this->apiSecret],
+            'handler'  => $handlerStack,
         ];
 
         if (!is_null($this->partnerId)) {
