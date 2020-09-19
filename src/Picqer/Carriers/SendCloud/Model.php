@@ -53,7 +53,7 @@ abstract class Model
      *
      * @return Connection
      */
-    public function connection()
+    public function connection(): Connection
     {
         return $this->connection;
     }
@@ -63,7 +63,7 @@ abstract class Model
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return $this->attributes;
     }
@@ -73,7 +73,7 @@ abstract class Model
      *
      * @param array $attributes
      */
-    protected function fill(array $attributes)
+    protected function fill(array $attributes): void
     {
         if (array_key_exists($this->namespaces['singular'], $attributes)) {
             $attributes = $attributes[$this->namespaces['singular']];
@@ -92,7 +92,7 @@ abstract class Model
      * @param array $attributes
      * @return array
      */
-    protected function fillableFromArray(array $attributes)
+    protected function fillableFromArray(array $attributes): array
     {
         if (count($this->fillable) > 0) {
             return array_intersect_key($attributes, array_flip($this->fillable));
@@ -105,7 +105,7 @@ abstract class Model
      * @param $key
      * @return bool
      */
-    protected function isFillable($key)
+    protected function isFillable($key): bool
     {
         return in_array($key, $this->fillable);
     }
@@ -114,7 +114,7 @@ abstract class Model
      * @param $key
      * @param $value
      */
-    protected function setAttribute($key, $value)
+    protected function setAttribute($key, $value): void
     {
         $this->attributes[$key] = $value;
     }
@@ -136,7 +136,7 @@ abstract class Model
      * @param $key
      * @return bool
      */
-    public function __isset($key)
+    public function __isset($key): bool
     {
         return isset($this->attributes[$key]);
     }
@@ -145,7 +145,7 @@ abstract class Model
      * @param $key
      * @param $value
      */
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         if ($this->isFillable($key)) {
             $this->setAttribute($key, $value);
@@ -155,7 +155,7 @@ abstract class Model
     /**
      * @return bool
      */
-    public function exists()
+    public function exists(): bool
     {
         if ( ! in_array($this->primaryKey, $this->attributes)) return false;
 

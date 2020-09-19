@@ -14,14 +14,14 @@ use Picqer\Carriers\SendCloud\Connection;
 trait FindAll
 {
 
-    public function all($params = [])
+    public function all($params = []): array
     {
         $result = $this->connection()->get($this->url, $params);
 
         return $this->collectionFromResult($result);
     }
 
-    public function collectionFromResult($result)
+    public function collectionFromResult($result): array
     {
         $collection = [];
 

@@ -17,7 +17,7 @@ trait Storable
      * @return $this
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function save()
+    public function save(): self
     {
         if ($this->exists()) {
             $this->fill($this->update());
@@ -32,7 +32,7 @@ trait Storable
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function insert()
+    public function insert(): array
     {
         return $this->connection()->post($this->url, $this->json());
     }
@@ -41,7 +41,7 @@ trait Storable
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function update()
+    public function update(): array
     {
         return $this->connection()->put($this->url . '/' . urlencode($this->id), $this->json());
     }
@@ -50,7 +50,7 @@ trait Storable
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function delete()
+    public function delete(): array
     {
         return $this->connection()->delete($this->url . '/' . urlencode($this->id));
     }

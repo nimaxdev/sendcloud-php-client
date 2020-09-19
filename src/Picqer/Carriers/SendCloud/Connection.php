@@ -5,7 +5,9 @@ namespace Picqer\Carriers\SendCloud;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
+use Iterator;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 
@@ -115,7 +117,7 @@ class Connection
         return $this->client;
     }
 
-    public function insertMiddleWare($middleWare)
+    public function insertMiddleWare($middleWare): void
     {
         $this->middleWares[] = $middleWare;
     }
@@ -130,7 +132,7 @@ class Connection
      *
      * @return string
      */
-    public function getApiKey()
+    public function getApiKey(): string
     {
         return $this->apiKey;
     }
@@ -158,8 +160,8 @@ class Connection
 
     /**
      * Perform a POST request
-     * @param string|UriInterface $url
-     * @param mixed               $body
+     * @param string|UriInterface                                    $url
+     * @param string|null|resource|StreamInterface|callable|Iterator $body
      * @return array
      * @throws SendCloudApiException
      */
@@ -179,8 +181,8 @@ class Connection
 
     /**
      * Perform PUT request
-     * @param string|UriInterface $url
-     * @param mixed               $body
+     * @param string|UriInterface                                    $url
+     * @param string|null|resource|StreamInterface|callable|Iterator $body
      * @return array
      * @throws SendCloudApiException
      */
@@ -204,7 +206,7 @@ class Connection
      * @return array
      * @throws SendCloudApiException
      */
-    public function delete($url)
+    public function delete($url): array
     {
         try {
             $result = $this->client()->delete($url);
@@ -223,7 +225,7 @@ class Connection
      * @return array Parsed JSON result
      * @throws SendCloudApiException
      */
-    public function parseResponse(ResponseInterface $response)
+    public function parseResponse(ResponseInterface $response): array
     {
         try {
             // Rewind the response (middlewares might have read it already)
@@ -259,7 +261,7 @@ class Connection
      * @return string
      * @deprecated
      */
-    public function getEnvironment()
+    public function getEnvironment(): string
     {
         return 'live';
     }
@@ -271,7 +273,7 @@ class Connection
      * @throws SendCloudApiException
      * @deprecated
      */
-    public function setEnvironment($environment)
+    public function setEnvironment(string $environment): void
     {
         if ($environment === 'test') {
             throw new SendCloudApiException('SendCloud test environment is no longer available');
@@ -287,7 +289,7 @@ class Connection
      * @throws SendCloudApiException
      * @throws RuntimeException if unable to read or an error occurs while reading.
      */
-    public function download(string $url, array $headers = ['Accept' => 'application/pdf'])
+    public function download(string $url, array $headers = ['Accept' => 'application/pdf']): string
     {
         try {
             $result = $this->client()->get($url, ['headers' => $headers]);
