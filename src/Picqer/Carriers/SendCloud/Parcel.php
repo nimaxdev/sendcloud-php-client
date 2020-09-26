@@ -5,7 +5,7 @@ namespace Picqer\Carriers\SendCloud;
 /**
  * Class Parcel
  *
- * @property integer id
+ * @property int id
  * @property string name
  * @property string company_name
  * @property string address
@@ -91,7 +91,7 @@ class Parcel extends Model
 
     protected $namespaces = [
         'singular' => 'parcel',
-        'plural' => 'parcels'
+        'plural'   => 'parcels'
     ];
 
     public function getTrackingUrl(): ?string
@@ -130,11 +130,11 @@ class Parcel extends Model
      * @return array
      * @throws SendCloudApiException
      */
-    public function cancel($parcelID = null)
+    public function cancel($parcelID = null): array
     {
         if ($parcelID) {
             $this->id = $parcelID;
         }
-        return $this->connection()->post($this->url.'/'.urlencode($this->id).'/cancel', '');
+        return $this->connection()->post($this->url . '/' . urlencode($this->id) . '/cancel', '');
     }
 }
