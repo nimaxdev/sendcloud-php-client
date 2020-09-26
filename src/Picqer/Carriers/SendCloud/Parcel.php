@@ -119,9 +119,9 @@ class Parcel extends Model
         return $this->label['label_printer'];
     }
 
-    public function getStatuses() {
-        $result = $this->connection()->get($this->url . '/statuses');
-        return $result;
+    public function getStatuses(): array
+    {
+        return $this->connection()->get($this->url . '/statuses');
     }
 
     /**

@@ -49,7 +49,7 @@ class Documents
                         'link' => $link,
                     ]);
                 }
-                break;
         }
+        return null;
     }
 }
