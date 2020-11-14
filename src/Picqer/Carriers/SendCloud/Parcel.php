@@ -27,6 +27,11 @@ namespace Picqer\Carriers\SendCloud;
  * @property string tracking_number
  * @property string weight
  * @property string sender_address
+ * @property string colli_tracking_number
+ * @property string colli_uuid
+ * @property string collo_nr
+ * @property string collo_count
+ * @property int quantity
  *
  * @package Picqer\Carriers\SendCloud
  */
@@ -85,6 +90,11 @@ class Parcel extends Model
         'requestShipment', // Special one to create new shipments
         'request_label',
         'request_label_async',
+        'colli_tracking_number',
+        'colli_uuid',
+        'collo_nr',
+        'collo_count',
+        'quantity',
     ];
 
     protected $url = 'parcels';
