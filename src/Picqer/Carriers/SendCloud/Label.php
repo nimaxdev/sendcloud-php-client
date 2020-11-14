@@ -41,6 +41,12 @@ class Label extends Model
         $this->parcel = $parent;
     }
 
+    public function bulk(array $ids = []): self
+    {
+        $result = $this->connection()->post($this->url, $ids);
+        return new static($this->connection(), $result[$this->namespaces['singular']]);
+    }
+
     /**
      * Returns the label content (PDF) in A6 format.
      *
