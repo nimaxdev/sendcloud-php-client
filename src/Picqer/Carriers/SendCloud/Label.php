@@ -43,7 +43,7 @@ class Label extends Model
 
     public function bulk(array $ids = []): self
     {
-        $result = $this->connection()->post($this->url, $ids);
+        $result = $this->connection()->post($this->url, json_encode(['label' => ['parcels' => array_values($ids)]]));
         return new static($this->connection(), $result[$this->namespaces['singular']]);
     }
 
