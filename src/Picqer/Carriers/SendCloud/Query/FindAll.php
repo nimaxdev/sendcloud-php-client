@@ -3,6 +3,7 @@
 namespace Picqer\Carriers\SendCloud\Query;
 
 use Picqer\Carriers\SendCloud\Connection;
+use Picqer\Carriers\SendCloud\SendCloudApiException;
 
 /**
  * Trait FindAll
@@ -14,6 +15,11 @@ use Picqer\Carriers\SendCloud\Connection;
 trait FindAll
 {
 
+    /**
+     * @param array $params
+     * @return static[]
+     * @throws SendCloudApiException
+     */
     public function all($params = []): array
     {
         $result = $this->connection()->get($this->url, $params);
