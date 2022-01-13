@@ -23,9 +23,14 @@ namespace Picqer\Carriers\SendCloud;
  * @property array label
  * @property array documents
  * @property bool requestShipment
+ * @property bool request_label
+ * @property bool request_label_async
  * @property string order_number
  * @property string tracking_number
  * @property string weight
+ * @property string width
+ * @property string height
+ * @property string depth
  * @property string sender_address
  * @property string colli_tracking_number
  * @property string colli_uuid
@@ -63,6 +68,9 @@ class Parcel extends Model
         'telephone',
         'tracking_number',
         'weight',
+        'width',
+        'height',
+        'depth',
         'label',
         'customs_declaration',
         'order_number',
