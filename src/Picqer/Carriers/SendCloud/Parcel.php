@@ -82,6 +82,7 @@ class Parcel extends Model
         'requestShipment', // Special one to create new shipments
         'request_label',
         'request_label_async',
+        'contract',
     ];
 
     protected $url = 'parcels';
