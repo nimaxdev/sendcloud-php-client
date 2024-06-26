@@ -5,7 +5,7 @@ namespace Picqer\Carriers\SendCloud;
 /**
  * Class Parcel
  *
- * @property integer id
+ * @property int id
  * @property string name
  * @property string company_name
  * @property string address
@@ -18,14 +18,25 @@ namespace Picqer\Carriers\SendCloud;
  * @property array status
  * @property array data
  * @property array country
+ * @property string country_state
  * @property array shipment
  * @property array label
  * @property array documents
  * @property bool requestShipment
+ * @property bool request_label
+ * @property bool request_label_async
  * @property string order_number
  * @property string tracking_number
  * @property string weight
+ * @property string width
+ * @property string height
+ * @property string depth
  * @property string sender_address
+ * @property string colli_tracking_number
+ * @property string colli_uuid
+ * @property string collo_nr
+ * @property string collo_count
+ * @property int quantity
  *
  * @package Picqer\Carriers\SendCloud
  */
@@ -44,6 +55,7 @@ class Parcel extends Model
         'city',
         'company_name',
         'country',
+        'country_state',
         'data',
         'date_created',
         'email',
@@ -56,6 +68,9 @@ class Parcel extends Model
         'telephone',
         'tracking_number',
         'weight',
+        'width',
+        'height',
+        'depth',
         'label',
         'customs_declaration',
         'order_number',
@@ -67,6 +82,7 @@ class Parcel extends Model
         'parcel_items',
         'documents',
         'type',
+        'sender_address',
         'shipment_uuid',
         'shipping_method',
         'external_order_id',
@@ -82,6 +98,11 @@ class Parcel extends Model
         'requestShipment', // Special one to create new shipments
         'request_label',
         'request_label_async',
+        'colli_tracking_number',
+        'colli_uuid',
+        'collo_nr',
+        'collo_count',
+        'quantity',
         'contract',
     ];
 
@@ -89,7 +110,7 @@ class Parcel extends Model
 
     protected $namespaces = [
         'singular' => 'parcel',
-        'plural' => 'parcels'
+        'plural'   => 'parcels'
     ];
 
     public function getTrackingUrl(): ?string
@@ -117,9 +138,9 @@ class Parcel extends Model
         return $this->label['label_printer'];
     }
 
-    public function getStatuses() {
-        $result = $this->connection()->get($this->url . '/statuses');
-        return $result;
+    public function getStatuses(): array
+    {
+        return $this->connection()->get($this->url . '/statuses');
     }
 
     /**
@@ -128,11 +149,11 @@ class Parcel extends Model
      * @return array
      * @throws SendCloudApiException
      */
-    public function cancel($parcelID = null)
+    public function cancel($parcelID = null): array
     {
         if ($parcelID) {
             $this->id = $parcelID;
         }
-        return $this->connection()->post($this->url.'/'.urlencode($this->id).'/cancel', '');
+        return $this->connection()->post($this->url . '/' . urlencode($this->id) . '/cancel', '');
     }
 }

@@ -154,7 +154,14 @@ class Connection
                 $this->parseResponse($e->getResponse());
             }
 
-            throw new SendCloudApiException('SendCloud error: (no error message provided)' . $e->getResponse(), $e->getResponse()->getStatusCode());
+            if ($statusCode = $e->getResponse()) {
+                $statusCode = $statusCode->getStatusCode();
+            } else {
+                $statusCode = 0;
+            }
+            throw new SendCloudApiException(
+                'SendCloud error: (no error message provided)' . $e->getResponse(), $statusCode
+            );
         }
     }
 
