@@ -103,6 +103,7 @@ class Parcel extends Model
         'collo_nr',
         'collo_count',
         'quantity',
+        'contract',
     ];
 
     protected $url = 'parcels';
