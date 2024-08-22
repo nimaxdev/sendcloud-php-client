@@ -36,6 +36,11 @@ class SendCloud
         return new ShippingMethod($this->connection);
     }
 
+    public function parcelStatuses(): ParcelStatus
+    {
+        return new ParcelStatus($this->connection);
+    }
+
     public function users(): User
     {
         return new User($this->connection);
@@ -44,6 +49,11 @@ class SendCloud
     public function senderAddresses(): SenderAddress
     {
         return new SenderAddress($this->connection);
+    }
+
+    public function contracts(): Contract
+    {
+        return new Contract($this->connection);
     }
 
     /**

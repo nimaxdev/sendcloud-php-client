@@ -5,38 +5,42 @@ namespace Picqer\Carriers\SendCloud;
 /**
  * Class Parcel
  *
- * @property int id
- * @property string name
- * @property string company_name
- * @property string address
- * @property array address_divided
- * @property string city
- * @property string postal_code
- * @property string telephone
- * @property string email
- * @property string date_created
- * @property array status
- * @property array data
- * @property array country
- * @property string country_state
- * @property array shipment
- * @property array label
- * @property array documents
- * @property bool requestShipment
- * @property bool request_label
- * @property bool request_label_async
- * @property string order_number
- * @property string tracking_number
- * @property string weight
- * @property string width
- * @property string height
- * @property string depth
- * @property string sender_address
- * @property string colli_tracking_number
- * @property string colli_uuid
- * @property string collo_nr
- * @property string collo_count
- * @property int quantity
+ * @property integer $id
+ * @property string $name
+ * @property string $company_name
+ * @property string $address
+ * @property string $house_number
+ * @property array $address_divided
+ * @property string $city
+ * @property string $postal_code
+ * @property string $telephone
+ * @property string $email
+ * @property string $date_created
+ * @property array $status
+ * @property array $data
+ * @property array $country
+ * @property string $country_state
+ * @property array $shipment
+ * @property array $label
+ * @property array $documents
+ * @property bool $requestShipment
+ * @property bool $request_label
+ * @property bool $request_label_async
+ * @property string $order_number
+ * @property string $tracking_number
+ * @property float $total_order_value
+ * @property string $total_order_value_currency
+ * @property string $weight
+ * @property string $width
+ * @property string $height
+ * @property string $depth
+ * @property string $sender_address
+ * @property string $colli_tracking_number
+ * @property string $colli_uuid
+ * @property string $collo_nr
+ * @property string $collo_count
+ * @property integer $quantity
+
  *
  * @package Picqer\Carriers\SendCloud
  */
@@ -51,6 +55,7 @@ class Parcel extends Model
         'address',
         'house_number',
         'address_2',
+        'house_number',
         'address_divided',
         'city',
         'company_name',
@@ -76,6 +81,8 @@ class Parcel extends Model
         'order_number',
         'insured_value',
         'total_insured_value',
+        'total_order_value',
+        'total_order_value_currency',
         'to_state',
         'customs_invoice_nr',
         'customs_shipment_type',
@@ -95,6 +102,10 @@ class Parcel extends Model
         'currency',
         'carrier',
         'tracking_url',
+        'request_label',
+        'request_label_async',
+        'apply_shipping_rules',
+        'shipping_method_checkout_name',
         'requestShipment', // Special one to create new shipments
         'request_label',
         'request_label_async',

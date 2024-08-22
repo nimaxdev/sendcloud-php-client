@@ -13,6 +13,24 @@ use RuntimeException;
 
 class Connection
 {
+    private string $apiUrl = 'https://panel.sendcloud.sc/api/v2/';
+    private string $apiKey;
+    private string $apiSecret;
+    private ?string $partnerId = null;
+    private ?int $maxResponseSizeInBytes = null;
+
+    /**
+     * Contains the HTTP client (Guzzle)
+     * @var Client
+     */
+    private ?Client $client = null;
+  
+    /**
+     * Array of inserted middleWares
+     * @var array
+     */
+    protected array $middleWares = [];
+
     protected $headers = [];
 
     /**
@@ -65,23 +83,6 @@ class Connection
         ]);
     }
 
-    private $apiUrl = 'https://panel.sendcloud.sc/api/v2/';
-    private $apiKey;
-    private $apiSecret;
-    private $partnerId;
-
-    /**
-     * Contains the HTTP client (Guzzle)
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * Array of inserted middleWares
-     * @var array
-     */
-    protected $middleWares = [];
-
     public function __construct(string $apiKey, string $apiSecret, ?string $partnerId = null)
     {
         $this->apiKey = $apiKey;
@@ -92,7 +93,7 @@ class Connection
 
     public function client(): Client
     {
-        if ($this->client) {
+        if ($this->client instanceof Client) {
             return $this->client;
         }
 
@@ -172,10 +173,10 @@ class Connection
      * @return array
      * @throws SendCloudApiException
      */
-    public function post($url, $body): array
+    public function post($url, $body, $query = []): array
     {
         try {
-            $result = $this->client()->post($url, ['body' => $body]);
+            $result = $this->client()->post($url, ['body' => $body, 'query' => $query]);
             return $this->parseResponse($result);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -193,10 +194,10 @@ class Connection
      * @return array
      * @throws SendCloudApiException
      */
-    public function put($url, $body): array
+    public function put($url, $body, $query = []): array
     {
         try {
-            $result = $this->client()->put($url, ['body' => $body]);
+            $result = $this->client()->put($url, ['body' => $body, 'query' => $query]);
             return $this->parseResponse($result);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -213,10 +214,10 @@ class Connection
      * @return array
      * @throws SendCloudApiException
      */
-    public function delete($url): array
+    public function delete($url, $query = []): array
     {
         try {
-            $result = $this->client()->delete($url);
+            $result = $this->client()->delete($url, ['query' => $query]);
             return $this->parseResponse($result);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
@@ -239,13 +240,24 @@ class Connection
             $response->getBody()->rewind();
 
             $responseBody = $response->getBody()->getContents();
-            $resultArray = json_decode($responseBody, true);
 
-            if (!is_array($resultArray)) {
-                throw new SendCloudApiException(sprintf('SendCloud error %s: %s', $response->getStatusCode(), $responseBody), $response->getStatusCode());
+            if (! is_null($this->maxResponseSizeInBytes)) {
+                if (strlen($responseBody) > $this->maxResponseSizeInBytes) {
+                    throw new MaximumResponseSizeException(sprintf('Response size exceeded maximum of %d bytes', $this->maxResponseSizeInBytes));
+                }
             }
 
-            if (array_key_exists('error', $resultArray)
+            $resultArray = json_decode($responseBody, true);
+
+            if (! is_array($resultArray)) {
+                throw new SendCloudApiException(sprintf(
+                    'SendCloud error %s: %s',
+                    $response->getStatusCode(),
+                    $responseBody
+                ), $response->getStatusCode());
+
+            if (
+                array_key_exists('error', $resultArray)
                 && is_array($resultArray['error'])
                 && array_key_exists('message', $resultArray['error'])
             ) {
@@ -263,9 +275,6 @@ class Connection
     }
 
     /**
-     * Returns the selected environment
-     *
-     * @return string
      * @deprecated
      */
     public function getEnvironment(): string
@@ -274,10 +283,6 @@ class Connection
     }
 
     /**
-     * Set the environment for the client
-     *
-     * @param string $environment
-     * @throws SendCloudApiException
      * @deprecated
      */
     public function setEnvironment(string $environment): void
@@ -287,6 +292,16 @@ class Connection
         }
     }
 
+    public function setMaxResponseSizeInBytes(?int $maxResponseSizeInBytes): void
+    {
+        $this->maxResponseSizeInBytes = $maxResponseSizeInBytes;
+    }
+
+    public function getMaxResponseSizeInBytes(): ?int
+    {
+        return $this->maxResponseSizeInBytes;
+    }
+  
     /**
      * Download a resource.
      *
@@ -307,4 +322,3 @@ class Connection
         return $result->getBody()->getContents();
     }
 }
-

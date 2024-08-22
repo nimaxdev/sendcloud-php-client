@@ -17,12 +17,12 @@ trait Storable
      * @return $this
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function save(): self
+    public function save($options = [])
     {
         if ($this->exists()) {
-            $this->fill($this->update());
+            $this->fill($this->update($options));
         } else {
-            $this->fill($this->insert());
+            $this->fill($this->insert($options));
         }
 
         return $this;
@@ -32,26 +32,26 @@ trait Storable
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function insert(): array
+    public function insert(array $options = [])
     {
-        return $this->connection()->post($this->url, $this->json());
+        return $this->connection()->post($this->url, $this->json(), $options);
     }
 
     /**
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function update(): array
+    public function update(array $options = [])
     {
-        return $this->connection()->put($this->url . '/' . urlencode($this->id), $this->json());
+        return $this->connection()->put($this->url . '/' . urlencode($this->id), $this->json(), $options);
     }
 
     /**
      * @return array
      * @throws \Picqer\Carriers\SendCloud\SendCloudApiException
      */
-    public function delete(): array
+    public function delete(array $options = [])
     {
-        return $this->connection()->delete($this->url . '/' . urlencode($this->id));
+        return $this->connection()->delete($this->url . '/' . urlencode($this->id), $options);
     }
 }
