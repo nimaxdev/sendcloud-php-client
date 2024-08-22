@@ -255,6 +255,7 @@ class Connection
                     $response->getStatusCode(),
                     $responseBody
                 ), $response->getStatusCode());
+            }
 
             if (
                 array_key_exists('error', $resultArray)
